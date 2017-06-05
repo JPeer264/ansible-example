@@ -2,7 +2,7 @@ server {
   root /var/www/{{ frontend_name }}/dev;
   index index.html index.htm;
 
-  listen {{ nginx_listen_prefix }}{{ nginx_port }};
+  listen {{ nginx_listen_prefix }}:{{ nginx_port }};
   server_name {{ nginx_server_name }};
 
 

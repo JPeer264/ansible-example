@@ -2,6 +2,7 @@
 backend_name: backend
 backend_destination: ./
 backend_entrypoint: ./api/api.js
+backend_port: 3333
 
 frontend_name: frontend
 frontend_destination: ./
@@ -11,7 +12,8 @@ app_database_name: name
 app_database_username: username
 postgres_app_password: password
 
-nginx_listen_prefix: "192.168.33.10:"
+nginx_listen_prefix: "192.168.33.10"
 nginx_port: 80
 nginx_server_name: _
 nginx_proxy_pass: "http://127.0.0.1:3333"
+

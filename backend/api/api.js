@@ -5,7 +5,9 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const helmet = require('helmet');
 const http = require('http');
+const cors = require('cors');
 const mapRoutes = require('express-routes-mapper');
+const UserController = require('./controllers/UserController');
 
 /**
  * server configuration
@@ -19,7 +21,7 @@ const database = require('../config/database');
 const app = express();
 const server = http.Server(app);
 const port = process.env.PORT_ENV || config.port;
-const mappedRoutes = mapRoutes(config.publicRoutes, 'api/controllers/');
+
 
 // environment: development, testing, production
 const environment = process.env.NODE_ENV;
@@ -31,24 +33,23 @@ app.use(helmet({
   ieNoOpen: false,
 }));
 
+app.use(cors());
+
 // parsing the request bodys
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// fill routes for express appliction
-app.use('/', mappedRoutes);
+app.post('/user', (req, res) => UserController().create(req, res));
+app.get('/users', (req, res) => UserController().getAll(req, res));
+
 
 server.listen(port, () => (
   database
     .sync()
     .then(() => {
       // keep data in database after restart
-      return database
-        .sync()
-        .then(() => {
-          console.log(`There we go ♕\nStarted in ${environment}\nGladly listening on http://127.0.0.1:${port}`);
-          console.log('Connection to the database has been established successfully');
-        });
+      console.log(`There we go ♕\nStarted in ${environment}\nGladly listening on http://127.0.0.1:${port}`);
+      console.log('Connection to the database has been established successfully');
     })
     .catch((err) => {
       console.error('Unable to connect to the database:', err);
