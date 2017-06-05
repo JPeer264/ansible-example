@@ -1,0 +1,55 @@
+---
+- name: install global dependencies
+  npm:
+    name: "{{ item }}"
+    global: true
+  with_items:
+    - forever
+    - gulp-cli
+
+# - name: copy project files
+#   copy:
+#     src: "{{ item }}"
+#     dest: /var/www
+#   with_items:
+#     - "{{ backend_destination }}{{ backend_name }}"
+#     - "{{ frontend_destination }}{{ frontend_name }}"
+
+# - include: npm_install.yml
+#   with_items:
+#     - "/var/www/{{ backend_name }}"
+#     - "/var/www/{{ frontend_name }}"
+
+# #################
+# # BACKEND TASKS #
+# #################
+# - name: check alls forever tasks
+#   command: forever list
+#   register: forever_list
+#   changed_when: false
+
+# - name: start backend with forever
+#   shell: "NODE_ENV=development forever start -c node {{ backend_entrypoint }}"
+#   args:
+#     chdir: /var/www/{{ backend_name }}
+#   when: "forever_list.stdout.find('/var/www/' ~ backend_name ~ '/' ~ backend_entrypoint ) == -1"
+#   register: lala
+
+# - debug:
+#     var: lala
+
+##################
+# FRONEND TASKS #
+##################
+- name: change api url in config
+  replace:
+    path: /var/www/{{ frontend_name }}/config.js
+    regexp: "(api_url:[\\s\\S]*)'[\\s\\S]*'" # group "api_url      " until first singlequote. should replace everything in singlequotes
+    replace: "\\1'{{ nginx_listen_prefix }}{{ nginx_port }}/api'"
+
+- name: build frontend
+  command: gulp build:dev
+  args:
+    chdir: /var/www/{{ frontend_name }}
+
+

@@ -1,0 +1,12 @@
+###
+# Run `npm install` just if a package.json exists in the given directory
+---
+- name: check for package.json
+  stat:
+    path: "{{ item }}/package.json"
+  register: packagejson
+
+- name: npm install
+  npm:
+    path: "{{ item }}"
+  when: packagejson.stat.exists

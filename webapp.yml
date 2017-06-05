@@ -1,0 +1,13 @@
+---
+- hosts: web
+  become: true
+  roles:
+    # - geerlingguy.nodejs
+    - setup
+    # - nvm
+    - postgres
+    - nginx
+    - project
+
+  # seed everything
+

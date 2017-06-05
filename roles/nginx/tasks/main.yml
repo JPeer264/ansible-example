@@ -1,0 +1,30 @@
+---
+- name: install nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: remove nginx default config file
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: copy nginx config file
+  template:
+    src: nginx_template
+    dest: /etc/nginx/sites-available/project_config
+    owner: root
+    group: root
+  with_items:
+    - "{{backend_name}}"
+
+- name: symlink to sites-enabled
+  file:
+    src: /etc/nginx/sites-available/project_config
+    dest: /etc/nginx/sites-enabled/project_config
+    state: link
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
