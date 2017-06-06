@@ -4,6 +4,8 @@
 
 ## What does it do?
 
+> **Note:** your host machine should be Ubuntu 16.04
+
 1. Connects to whatever is given in `./hosts`
 1. Installs and setup `postgres`
 1. Installs and setup `nginx`
@@ -12,7 +14,7 @@
 
 ## Getting started
 
-First make sure ansible is installed on your machine. [More Info](http://docs.ansible.com/ansible/intro_installation.html)
+First make sure `ansible` is installed on your machine. [More Info](http://docs.ansible.com/ansible/intro_installation.html)
 
 In this example the `example-frontend` and the `example-backend` are in the same folder, this should be avoided, so in "real life" a SCM should be used instead (e.g. via [ansible git module](http://docs.ansible.com/ansible/git_module.html)).
 
