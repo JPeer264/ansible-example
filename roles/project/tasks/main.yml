@@ -29,7 +29,7 @@
   changed_when: false
 
 - name: start backend with forever
-  shell: "DB_NAME={{ app_database_name }} DB_PASSWORD={{ app_database_password }} DB_USER={{ app_database_username }}  NODE_ENV=development forever start -c node {{ backend_entrypoint }}"
+  shell: "DB_NAME={{ app_database_name }} DB_PASSWORD={{ app_database_password }} DB_USER={{ app_database_username }} PORT={{ backend_port }} NODE_ENV=development forever start -c node {{ backend_entrypoint }}"
   args:
     chdir: /var/www/{{ backend_name }}
   when: "forever_list.stdout.find(backend_entrypoint) == -1"
