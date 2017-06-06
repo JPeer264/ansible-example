@@ -11,13 +11,13 @@
 
 - name: create postgres database
   postgresql_db:
-    name: "{{app_database_name}}"
+    name: "{{ app_database_name }}"
   become_user: postgres
 
 - name: create postgres user
   postgresql_user:
-    db: "{{app_database_name}}"
-    name: "{{app_database_username}}"
+    db: "{{ app_database_name }}"
+    name: "{{ app_database_username }}"
     priv: ALL
-    password: "{{postgres_app_password}}"
+    password: "{{ app_database_password }}"
   become_user: postgres

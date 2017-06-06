@@ -1,0 +1,9 @@
+# modules
+node_modules
+bower_components
+
+# gulp generated
+dev
+dest
+coverage
+reports

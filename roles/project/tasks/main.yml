@@ -24,21 +24,15 @@
 # BACKEND TASKS #
 #################
 - name: check alls forever tasks
-  command: forever list
+  command: forever list --no-color
   register: forever_list
   changed_when: false
 
-- shell: "forever stopall"
-
 - name: start backend with forever
-  shell: "DB_NAME={{ app_database_name }} DB_PASSWORD={{ postgres_app_password }} DB_USER={{ app_database_username }}  NODE_ENV=development forever start -c node {{ backend_entrypoint }}"
+  shell: "DB_NAME={{ app_database_name }} DB_PASSWORD={{ app_database_password }} DB_USER={{ app_database_username }}  NODE_ENV=development forever start -c node {{ backend_entrypoint }}"
   args:
     chdir: /var/www/{{ backend_name }}
-  # when: "forever_list.stdout.find('/var/www/' ~ backend_name ~ '/' ~ backend_entrypoint ) == -1"
-  register: lala
-
-- debug:
-    var: lala
+  when: "forever_list.stdout.find(backend_entrypoint) == -1"
 
 ##################
 # FRONEND TASKS #
@@ -46,7 +40,7 @@
 - name: change api url in config
   replace:
     path: /var/www/{{ frontend_name }}/config.js
-    regexp: "(api_url:[\\s\\S]*)'[\\s\\S]*'" # group "api_url      " until first singlequote. should replace everything in singlequotes
+    regexp: "(api_url:[\\s\\S]*)'[\\s\\S]*'" # matches: api_url    'incl. singlequotes' || group "api_url      " until first singlequote. should replace everything in singlequotes
     replace: "\\1'http://{{ nginx_listen_prefix }}:{{ backend_port }}'"
 
 - name: build frontend

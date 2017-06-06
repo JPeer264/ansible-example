@@ -1,16 +1,16 @@
 ---
-backend_name: backend
+backend_name: example-backend
 backend_destination: ./
-backend_entrypoint: ./api/api.js
+backend_entrypoint: api/api.js
 backend_port: 3333
 
-frontend_name: frontend
+frontend_name: example-frontend
 frontend_destination: ./
 frontend_entrypoint: ./index.html
 
 app_database_name: name
 app_database_username: username
-postgres_app_password: password
+app_database_password: password
 
 nginx_listen_prefix: "192.168.33.10"
 nginx_port: 80
