@@ -2,8 +2,8 @@
 - hosts: web
   become: true
   roles:
-    # - setup
-    # - geerlingguy.nodejs
-    # - postgres
-    # - nginx
+    - setup
+    - geerlingguy.nodejs
+    - postgres
+    - nginx
     - project
